@@ -102,19 +102,19 @@ uiwait(msgbox({'Set directory and basename in ScanImage:';
 % [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
 
 
-% % pip for freq tuning
+%% pip for freq tuning
 % % 
-% metadata.ITI = 0.5; %seconds of laser shuttered between trials.
-% metadata.totalDur = 3;
-% metadata.startPadDur =0.75; %1.2800;
-% metadata.fs = 4e4;
-% metadata.maxVoltage = 4; %use max 0.5 if powering a speaker!!
-% plotting = 0;
-% metadata.stimulusPath = [];  %add correct path
-% [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
+metadata.ITI = 0.5; %seconds of laser shuttered between trials.
+metadata.totalDur = 3;
+metadata.startPadDur =0.75; %1.2800;
+metadata.fs = 4e4;
+metadata.maxVoltage = 4; %use max 0.5 if powering a speaker!!
+plotting = 0;
+metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\PipsANDAmplitudes';  %add correct path
+[metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
 
 
-% %OK 
+%% OK 
 % PI_displacem + pips
 % 
 metadata.ITI = 0.75; %seconds of laser shuttered between trials.
@@ -123,7 +123,7 @@ metadata.startPadDur =0.75; %1.2800;
 metadata.fs = 4e4;
 metadata.maxVoltage = 4; %use max 0.5 if powering a speaker!!
 plotting = 0;
-metadata.stimulusPath = [];  %add correct path
+metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\displANDPips.mat';  %add correct path
 [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
 
 

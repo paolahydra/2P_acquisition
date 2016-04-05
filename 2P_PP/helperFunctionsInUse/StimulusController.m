@@ -33,7 +33,11 @@ gui_State = struct('gui_Name',       mfilename, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
-    gui_State.gui_Callback = str2func(varargin{1});
+    %only the first time it's called this will take the actual input to the function,
+    %which is a filepath string, and produce an error, so I am controlling for it.
+    if isempty(regexp(varargin{1}, '[\\\/\:]'))
+        gui_State.gui_Callback = str2func(varargin{1});
+    end
 end
 
 if nargout
@@ -199,7 +203,7 @@ function CalculateDur_Callback(hObject, eventdata, handles)
 % hObject    handle to CalculateDur (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-x = stimulusInterpreter(handles,0);
+x = stimulusInterpreterII(handles,0);
 totDurationMin = (x.totDurRun + length(x.trials)*handles.ITI)/60;
 str = sprintf('%.1f', totDurationMin);
 set(handles.totDuration, 'String', str)
