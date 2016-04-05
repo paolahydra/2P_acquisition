@@ -40,7 +40,8 @@ classdef PipStimulus < AuditoryStimulus
         end
         
         function stimulus = get.stimulus(obj)   
-            load('C:\Users\Paola\Dropbox\Data\correctorFunction30um.mat')
+            g = getpref;
+            load(g.correctFreqDisplacPiezo.Piezo30um)
             % Make pip
             pip = obj.makeSine(obj.carrierFreqHz,obj.pipDur,(obj.carrierPhase / obj.carrierFreqHz));
             

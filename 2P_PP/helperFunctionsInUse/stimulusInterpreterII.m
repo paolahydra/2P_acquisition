@@ -1,4 +1,4 @@
-function [metadata, varargout] = stimulusInterpreter(metadata, plotting)
+function [metadata, varargout] = stimulusInterpreterII(metadata, plotting)
 %% makes actual trials list, with properties;
 % to be completed. Only supports random list for now.
 metadata.trials = [];
@@ -25,6 +25,7 @@ if ~isfield(metadata, 'maxVoltage')
 end
 
 countStim = 0;
+countALLStim = 0;
 metadata.haveSubstimuli = ones(1, length(metadata.stimuli));
 
 starts = [1; cumsum(metadata.nRows(1:end-1))+1];
@@ -95,6 +96,19 @@ for i = 1:length(metadata.stimuli)
 %             hf(i) = figure('WindowStyle', 'docked');
                 stimuli(countStim).stim.plot;
             end
+            % MOREOVER, repeat the actual stim as many times as the repetitions.
+            for jj = 1:metadata.repetitions(i)
+                countALLStim = countALLStim + 1;
+                ALLstimuli(countALLStim).stim = eval(metadata.stimuli{i}); %make specific stim
+                ALLstimuli(countALLStim).stim.startPadDur = metadata.startPadDur;
+                ALLstimuli(countALLStim).stim.totalDur = metadata.totalDur;
+                ALLstimuli(countALLStim).stim.sampleRate = metadata.fs;
+                ALLstimuli(countALLStim).stim.maxVoltage = metadata.maxVoltage;
+                for iprop = 1:size(subcombs, 2)
+                    app = sub(iprop).values(subcombs(icombs, iprop));
+                    set( ALLstimuli(countALLStim).stim, eval('sub(iprop).prop{1}'), app )
+                end
+            end
         end
     else
         countStim = countStim + 1;
@@ -111,12 +125,25 @@ for i = 1:length(metadata.stimuli)
 %             hf(i) = figure('WindowStyle', 'docked');
             stimuli(countStim).stim.plot;
         end
+        % MOREOVER, repeat the actual stim as many times as the repetitions.
+        for jj = 1 : metadata.repetitions(i)
+            countALLStim = countALLStim + 1;
+            ALLstimuli(countALLStim).stim = eval(metadata.stimuli{i}); %make specific stim
+            ALLstimuli(countALLStim).stim.startPadDur = metadata.startPadDur;
+            ALLstimuli(countALLStim).stim.totalDur = metadata.totalDur;
+            ALLstimuli(countALLStim).stim.sampleRate = metadata.fs;
+            ALLstimuli(countALLStim).stim.maxVoltage = metadata.maxVoltage;
+        end
     end
 end
+randKey = randperm(length(metadata.trials));
+metadata.trials = metadata.trials(randKey);
+ALLstimuli = ALLstimuli(randKey);
 
-metadata.trials = metadata.trials(randperm(length(metadata.trials)));
-
-if nargout == 2
+if nargout >= 2
     varargout{1} = stimuli;
+end
+if nargout == 3
+    varargout{2} = ALLstimuli;
 end
 end

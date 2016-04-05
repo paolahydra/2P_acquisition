@@ -1,15 +1,4 @@
 %  2P AUDITORY MAPPING EXPERIMENT WITH TRIALS CONTROL
-
-%% 0. check or set preferences
-if ~ispref('scimSavePrefs')
-    addpref('scimSavePrefs', 'dataDirectory', 'flyNum')
-    dataDirectory = uigetdir(pwd, 'Select a base folder for saving all your data:');
-    setpref('scimSavePrefs', {'dataDirectory', 'flyNum'}, {dataDirectory, 1});
-elseif ~ispref('scimSavePrefs', 'flyNum')
-    addpref('scimSavePrefs', 'flyNum', 0)
-%     setpref('scimSavePrefs', 'flyNum', 0);
-end
-
 %% 1. load all the settings, only need to do it once.
 % This is evaluated at start of each experiment (run). 
 % It is not necessarily a new fly, but always a new run.  <----
@@ -18,6 +7,19 @@ end
 %
 % Note: Only flyNum is kept as a preference, since it is only determined by
 % the previous flies recorded.
+
+% 0. check or set preferences
+if ~ispref('scimSavePrefs')
+    dataDirectory = uigetdir(pwd, 'Select a base folder for saving all your data:');
+    setpref('scimSavePrefs', {'dataDirectory', 'flyNum'}, {dataDirectory, 1});
+elseif ~ispref('scimSavePrefs', 'flyNum')
+    addpref('scimSavePrefs', 'flyNum', 0)           % setpref('scimSavePrefs', 'flyNum', 0); %(reset)
+end
+if ~ispref('correctFreqDisplacPiezo')
+    [FileName,PathName,~] = uigetfile(pwd, 'Select the path to the file with the freq/displacement correction for the 30um piezo:');
+    correctorFunction30umPath = fullfile(PathName, FileName);
+    addpref('correctFreqDisplacPiezo', 'Piezo30um', correctorFunction30umPath);
+end
 
 %fly
 dataDirectory = getpref('scimSavePrefs', 'dataDirectory');
@@ -74,20 +76,55 @@ uiwait(msgbox({'Set directory and basename in ScanImage:';
 
 %% 2. decide stimulus composition 
 
-% decide which stimuli to use and general structure and make actual trial list
-%add random in the input and function
-metadata.ITI = 2.5; %seconds of laser shuttered between trials.
-metadata.totalDur = 14;
-metadata.startPadDur = 3;
+samplingTime2P = 0.0640;
 metadata.fs = 4e4;
-metadata.maxVoltage = 1.2; %use max 0.5 if powering a speaker!!
+metadata.maxVoltage = 4;  % 4V == 12um is the new value for 30um piezo
+metadata.ITI = 5;         % seconds of laser shuttered between maxi-trials.
+
+% %CHIRPS
+% metadata.ITI = 3; %seconds of laser shuttered between trials.
+% metadata.totalDur = 12;
+% metadata.startPadDur =1.5; %1.2800;
+% plotting = 1;
+% metadata.stimulusPath = [];  %add correct path
+% [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
+
+
+% %OK
+% % % pip for freq tuning -- 3 CYCLES
+% metadata.ITI = 0.5; %seconds of laser shuttered between trials.
+% metadata.totalDur = 4;%3.5;
+% metadata.startPadDur =0.75; %1.2800;
+% plotting = 0;
+% metadata.stimulusPath = [];  %add correct path
+% [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
+
+
+% % pip for freq tuning
+% % 
+% metadata.ITI = 0.5; %seconds of laser shuttered between trials.
+% metadata.totalDur = 3;
+% metadata.startPadDur =0.75; %1.2800;
+% plotting = 0;
+% metadata.stimulusPath = [];  %add correct path
+% [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
+
+
+% %OK 
+% % % PI_displacem + pips
+runfolder = '/Users/galileo/Desktop/runfolder'; %temp
+metadata.totalDur = samplingTime2P * 8;
+metadata.startPadDur = samplingTime2P * 0;
 plotting = 0;
-[metadata, stimuli] = stimulusManager(runfolder,metadata,plotting);
+metadata.stimulusPath = '/Users/galileo/Desktop/runfolder/stimuliSettings.mat';  %add correct path
+[metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
+
+%% lump stimuli into maxi-trials
 
 
-
-%% 4. play, synch and save
+%% 4. play, synch and save, experimental series
 % acquisition-specific settings:
+clc
 settings.outputchannels =[0,1]; 
 settings.inputchannels = [5,6];
 settings.trigOut = 'port0/line0';
@@ -97,13 +134,7 @@ settings.aiNchan = length(settings.inputchannels);
 
 s = daq.createSession ('ni');
 s.Rate = settings.fs; 
-% set output channels:
-ao = s.addAnalogOutputChannel(settings.devID, settings.outputchannels, 'Voltage');
-ao(1).Name = 'Piezo-90um';
-ao(2).Name = 'Trigger';
-% digital trigger out
-% do = s.addDigitalChannel(settings.devID,settings.trigOut,'OutputOnly');
-% set input channels:
+
 ai = s.addAnalogInputChannel(settings.devID, settings.inputchannels , 'Voltage'); %this will be single ended because 'Differential' on this device is not supported
 ai(1).Range = [-10 10];
 ai(1).Name = 'Sensor';
@@ -118,30 +149,50 @@ if settings.aiNchan > 2
     ai(3).Name = 'Sensor';
 end
 
+%  read DC offset first, and do again in case you need to tweak
+DC_offset = startForeground(s);
+DC_offset = mean(DC_offset);
+DC_offset = DC_offset(1);
+fprintf('The DC offset is set at %f Volts\n', DC_offset)
+% other users with short-travel piezo may want to stop the process here and tweak DC_offset until acceptable
+
+
+% set output channels:
+ao = s.addAnalogOutputChannel(settings.devID, settings.outputchannels, 'Voltage');
+ao(1).Name = 'Piezo-90um';
+ao(2).Name = 'Trigger';
+% digital trigger out
+% do = s.addDigitalChannel(settings.devID,settings.trigOut,'OutputOnly');
+% set input channels:
+
 pauseTime = metadata.ITI * (length(metadata.trials)-1); 
 fprintf('\nThis run consists of %4d trials\n', length(metadata.trials) )
 fprintf('It will take %3.2f minutes to complete\n\n', (metadata.totDurRun + pauseTime)/60 )
 
 
-%% start acquisition
+% start acquisition
 readygo = questdlg('Start experiment and recording- PIEZO?', 'Start Acquisition', ...
                    'Cancel', 'Start', 'Start');
+
+%               
 if strcmp(readygo, 'Start')
     fid1 = fopen(fullfile(runfolder, 'log.bin'),'a');
     FS = stoploop('Stop Acquisition');
+    
+    
+    
     % loop into trials
-    for t = 1:length(metadata.trials)   
+    for t = 1:length(ALLstimuli)   
         fprintf('Trial n. %3d started...\t', t)
-        stim = stimuli(metadata.trials(t)).stim;
-        stim.maxVoltage = metadata.maxVoltage;
-        stim.plot;
+        stim = ALLstimuli(t).stim;
+
         extTrig = 3.3*ones(size(stim.stimulus)); %try with 1.5V? ao trigger to minimize noise on the other channel.
-        
         extTrig(1) = 0;
         extTrig(end) = 0;
         extTrig(end-1) = 0;
         
-        queueOutputData(s,[stim.stimulus extTrig]); %check channel order and everything
+        queueOutputData(s,[stim.stimulus extTrig]);
+        
         data = s.startForeground;
         fprintf('Completed.\n')
         data = data'; %now data is nxm, where n is the number of input channels in the session, and m is the number of scans acquired.
@@ -156,15 +207,19 @@ if strcmp(readygo, 'Start')
         pause(metadata.ITI);
 
     end
+    
+    
+    
     fclose(fid1);
     FS.Clear();
-    delete(s);
     
     %read from log and save all data in .mat
     fid2 = fopen(fullfile(runfolder, 'log.bin'),'r');
     dataInput = fread(fid2, [settings.aiNchan + 2,inf], 'single');
     fclose(fid2);
     metadata.settings = settings;
-    save(filesave,'metadata', 'dataInput', 'stimuli', '-v7.3');
+    save(filesave,'metadata', 'dataInput', 'stimuli','ALLstimuli', '-v7.3');
     delete(fullfile(runfolder, 'log.bin'))
 end
+
+delete(s);

@@ -65,7 +65,9 @@ handles.exportTxtLog = [];
 %set fields:
 set(handles.currentFly, 'String', handles.FlyNum);
 set(handles.eclosiontx, 'String', datestr(now,'YYmmdd'));
-
+set(handles.righttx, 'String', 'ok, a2 glued, piezo attached');
+set(handles.lefttx, 'String', 'ok, a2 glued');
+set(handles.linetx, 'String', 'het: UAS-GCaMP6F x ');
 
 % Update handles structure
 guidata(hObject, handles);

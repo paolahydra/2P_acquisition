@@ -48,8 +48,8 @@ classdef AuditoryStimulus < hgsetget %matlab.mixin.SetGet % r2015a
         
         %%-----Add Pad----------------------------------------------------------------------
         function stimulus = addPad(obj,stimulus)
-            startPad = zeros(obj.sampleRate*obj.startPadDur,1);
-            endPad = zeros(obj.sampleRate*obj.endPadDur,1);
+            startPad = zeros(round(obj.sampleRate*obj.startPadDur),1);
+            endPad = zeros(round(obj.sampleRate*obj.endPadDur),1);
             stimulus = [startPad;stimulus;endPad];
         end
         
