@@ -30,7 +30,7 @@ ao(1).Name = 'Piezo-30um';
 %% stimulus 1
 stim = Stimulus2CorrectAmplitude; %with correction now
 stim.startPadDur = 1;
-stim.amplitude = 0.3;
+stim.amplitude = 0.25;
 stim.totalDur = 12;
 stim.maxVoltage = 4;
 
@@ -45,6 +45,24 @@ stim.maxVoltage = 4;
 stim.carrierFreqHz = 80;
 stim.pipDur = 0;
 stim.DCduration = 3.5;
+% stim.plot;
+assert(range(stim.stimulus) <= 10, 'Control input exceeds maximum allowed voltage (10V)')
+assert(DC_offset + max(stim.stimulus) <= 10, 'Check the DC offset value of the piezo')
+assert(DC_offset + min(stim.stimulus) >= 0, 'Check the DC offset value of the piezo')
+
+%% stimulus 3
+stim = PI_DCoffset_PipStimulus;
+stim.totalDur = 8.1;
+stim.DCoffset = 0;
+stim.modulationDirection = 0;
+stim.startPadDur =0.5; %1.2800;
+stim.amplitude = 0.2;
+stim.maxVoltage = 4;
+stim.carrierFreqHz = 240;
+stim.pipLatency = 0;
+stim.DCduration = 7.6;
+stim.pipDur = 7.5;
+
 % stim.plot;
 assert(range(stim.stimulus) <= 10, 'Control input exceeds maximum allowed voltage (10V)')
 assert(DC_offset + max(stim.stimulus) <= 10, 'Check the DC offset value of the piezo')

@@ -80,17 +80,19 @@ metadata.samplingTime2P = 0.0640;
 metadata.fs             = 4e4;
 metadata.maxVoltage     = 4;     % 4V == 12um is the new value for 30um piezo
 
-metadata.ITI            = 0;       %fix temp
-metadata.maxiITI        = 10;    % seconds of laser shuttered between maxi-trials.
-metadata.maxiPreWL      = metadata.samplingTime2P*16 * 5;     % last is ~seconds
-metadata.maxiReps       = 8;
+metadata.maxiITI        = 5;    % seconds of laser shuttered between maxi-trials.
+metadata.maxiPreWL      = metadata.samplingTime2P*16 * 3;     % last is ~seconds
+metadata.maxiReps       = 10;
+metadata.totalDur       = metadata.samplingTime2P * 56;     %8X = 0.512sec; 
+metadata.startPadDur    = metadata.samplingTime2P * 0;
+
 %temp:
+metadata.ITI            = 0;       %fix temp
 maxiReps = metadata.maxiReps; %temp fix
 maxiPreWL = metadata.maxiPreWL; % temp fix
 maxiITI = metadata.maxiITI;   % temp fix
 
-metadata.totalDur       = metadata.samplingTime2P * 56;     %8X = 0.512sec; 
-metadata.startPadDur    = metadata.samplingTime2P * 0;
+
 plotting = 0;
 
 
