@@ -110,7 +110,7 @@ metadata.startPadDur =0.75; %1.2800;
 metadata.fs = 4e4;
 metadata.maxVoltage = 4; %use max 0.5 if powering a speaker!!
 plotting = 0;
-metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\PipsANDAmplitudes';  %add correct path
+metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\PipsANDAmplitudes';
 [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
 
 
@@ -123,7 +123,7 @@ metadata.startPadDur =0.75; %1.2800;
 metadata.fs = 4e4;
 metadata.maxVoltage = 4; %use max 0.5 if powering a speaker!!
 plotting = 0;
-metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\displANDPips.mat';  %add correct path
+metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\displANDPips.mat'; 
 [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
 
 

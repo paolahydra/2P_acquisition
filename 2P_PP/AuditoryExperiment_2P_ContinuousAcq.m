@@ -76,47 +76,19 @@ uiwait(msgbox({'Set directory and basename in ScanImage:';
 
 %% 2. decide stimulus composition 
 
-samplingTime2P = 0.0640;
-metadata.fs = 4e4;
-metadata.maxVoltage = 4;  % 4V == 12um is the new value for 30um piezo
-metadata.ITI = 5;         % seconds of laser shuttered between maxi-trials.
-
-% %CHIRPS
-% metadata.ITI = 3; %seconds of laser shuttered between trials.
-% metadata.totalDur = 12;
-% metadata.startPadDur =1.5; %1.2800;
-% plotting = 1;
-% metadata.stimulusPath = [];  %add correct path
-% [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
-
-
-% %OK
-% % % pip for freq tuning -- 3 CYCLES
-% metadata.ITI = 0.5; %seconds of laser shuttered between trials.
-% metadata.totalDur = 4;%3.5;
-% metadata.startPadDur =0.75; %1.2800;
-% plotting = 0;
-% metadata.stimulusPath = [];  %add correct path
-% [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
-
-
-% % pip for freq tuning
-% % 
-% metadata.ITI = 0.5; %seconds of laser shuttered between trials.
-% metadata.totalDur = 3;
-% metadata.startPadDur =0.75; %1.2800;
-% plotting = 0;
-% metadata.stimulusPath = [];  %add correct path
-% [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
-
-
-% %OK 
-% % % PI_displacem + pips
-runfolder = '/Users/galileo/Desktop/runfolder'; %temp
-metadata.totalDur = samplingTime2P * 8;
-metadata.startPadDur = samplingTime2P * 0;
+metadata.samplingTime2P = 0.0640;
+metadata.fs             = 4e4;
+metadata.maxVoltage     = 4;     % 4V == 12um is the new value for 30um piezo
+metadata.ITI            = 5;     % seconds of laser shuttered between maxi-trials.
+metadata.totalDur       = metadata.samplingTime2P * 8;     %8X = 0.512sec; 
+metadata.startPadDur    = metadata.samplingTime2P * 0;
 plotting = 0;
-metadata.stimulusPath = '/Users/galileo/Desktop/runfolder/stimuliSettings.mat';  %add correct path
+
+%% % PI_displacem + pips
+metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\displANDPips.mat'; 
+[metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
+%% %
+metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\PipsANDAmplitudes';  %add correct path
 [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
 
 %% lump stimuli into maxi-trials
