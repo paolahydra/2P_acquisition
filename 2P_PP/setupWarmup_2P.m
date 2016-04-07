@@ -1,15 +1,4 @@
 %  2P AUDITORY MAPPING EXPERIMENT WITH TRIALS CONTROL
-
-%% 0. check or set preferences
-if ~ispref('scimSavePrefs')
-    addpref('scimSavePrefs', 'dataDirectory', 'flyNum')
-    dataDirectory = uigetdir(pwd, 'Select a base folder for saving all your data:');
-    setpref('scimSavePrefs', {'dataDirectory', 'flyNum'}, {dataDirectory, 1});
-elseif ~ispref('scimSavePrefs', 'flyNum')
-    addpref('scimSavePrefs', 'flyNum', 0)
-%     setpref('scimSavePrefs', 'flyNum', 0);
-end
-
 %% 1. load all the settings, only need to do it once.
 % This is evaluated at start of each experiment (run). 
 % It is not necessarily a new fly, but always a new run.  <----
@@ -18,6 +7,16 @@ end
 %
 % Note: Only flyNum is kept as a preference, since it is only determined by
 % the previous flies recorded.
+
+% 0. check or set preferences
+if ~ispref('scimSavePrefs')
+    addpref('scimSavePrefs', 'dataDirectory', 'flyNum')
+    dataDirectory = uigetdir(pwd, 'Select a base folder for saving all your data:');
+    setpref('scimSavePrefs', {'dataDirectory', 'flyNum'}, {dataDirectory, 1});
+elseif ~ispref('scimSavePrefs', 'flyNum')
+    addpref('scimSavePrefs', 'flyNum', 0)
+%     setpref('scimSavePrefs', 'flyNum', 0);
+end
 
 %fly
 dataDirectory = getpref('scimSavePrefs', 'dataDirectory');
@@ -82,6 +81,7 @@ metadata.startPadDur = 3;
 metadata.fs = 4e4;
 metadata.maxVoltage = 1.2; %use max 0.5 if powering a speaker!!
 plotting = 0;
+metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\warmup130min';
 [metadata, stimuli] = stimulusManager(runfolder,metadata,plotting);
 
 
@@ -107,7 +107,7 @@ fprintf('\nThis run consists of %4d trials\n', length(metadata.trials) )
 fprintf('It will take %3.2f minutes to complete\n\n', (metadata.totDurRun + pauseTime)/60 )
 
 
-%% start acquisition
+% start acquisition
 readygo = questdlg('Start experiment and recording- PIEZO?', 'Start Acquisition', ...
                    'Cancel', 'Start', 'Start');
 if strcmp(readygo, 'Start')
@@ -133,5 +133,5 @@ if strcmp(readygo, 'Start')
 
     end
     FS.Clear();
-    delete(s);
 end
+delete(s);

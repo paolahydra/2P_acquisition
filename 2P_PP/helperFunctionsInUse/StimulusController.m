@@ -33,7 +33,11 @@ gui_State = struct('gui_Name',       mfilename, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
-    gui_State.gui_Callback = str2func(varargin{1});
+    %only the first time it's called this will take the actual input to the function,
+    %which is a filepath string, and produce an error, so I am controlling for it.
+    if isempty(regexp(varargin{1}, '[\\\/\:]'))
+        gui_State.gui_Callback = str2func(varargin{1});
+    end
 end
 
 if nargout
@@ -65,6 +69,7 @@ if length(varargin) >= 2
     handles.fs = varargin{2}.fs;    %if not in input, default gets found here
     handles.ITI = varargin{2}.ITI;
     handles.maxVoltage = varargin{2}.maxVoltage;
+    handles.stimulusPath = varargin{2}.stimulusPath;
 else
     a = AuditoryStimulus;
     handles.totalDur = a.totalDur;
@@ -73,6 +78,7 @@ else
     handles.maxVoltage = a.maxVoltage;
     delete(a)
     handles.ITI = 0;
+    handles.stimulusPath = [];
 end
 
 
@@ -86,14 +92,23 @@ for i = 1:length(availableStimuli)
 end
 handles.availableStimuli = availableStimuli;
 set(handles.availableSt,'String', handles.availableStimuli)
-handles.stimuli = {};
+
+if ~isempty(handles.stimulusPath)
+    load(handles.stimulusPath);     %tdata, stimuli
+    handles.tdata = tdata;
+    handles.stimuli = stimuli;
+    handles.nRows = nRows;
+    handles.repetitions = repetitions;
+    set(handles.table, 'data', handles.tdata);
+else
+    handles.stimuli = {};
+    handles.tdata = {};
+    handles.nRows = []; %column vector, one entry per experimental stimulus, updtaed by ADDST, RMST
+    handles.repetitions = []; %column vector, one entry per experimental stimulus, updated by ADDST, RMST AND editParameters (value)...
+end
 set(handles.experimSt, 'String', handles.stimuli)
-handles.tdata = {};
-handles.nRows = []; %column vector, one entry per experimental stimulus, updtaed by ADDST, RMST
-handles.repetitions = []; %column vector, one entry per experimental stimulus, updated by ADDST, RMST AND editParameters (value)...
 % Outputs
 handles.export = [];
-
 guidata(hObject, handles);
 
 % UIWAIT makes StimulusControllerII wait for user response (see UIRESUME)
@@ -188,7 +203,7 @@ function CalculateDur_Callback(hObject, eventdata, handles)
 % hObject    handle to CalculateDur (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-x = stimulusInterpreter(handles,0);
+x = stimulusInterpreterII(handles,0);
 totDurationMin = (x.totDurRun + length(x.trials)*handles.ITI)/60;
 str = sprintf('%.1f', totDurationMin);
 set(handles.totDuration, 'String', str)
