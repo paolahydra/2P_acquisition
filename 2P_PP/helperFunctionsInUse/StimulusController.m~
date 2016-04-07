@@ -67,22 +67,17 @@ if length(varargin) >= 2
     handles.totalDur = varargin{2}.totalDur;        %passed to the interpreter
     handles.startPadDur = varargin{2}.startPadDur;  %passed to the interpreter
     handles.fs = varargin{2}.fs;    %if not in input, default gets found here
+    handles.ITI = varargin{2}.ITI;
     handles.maxVoltage = varargin{2}.maxVoltage;
     handles.stimulusPath = varargin{2}.stimulusPath;
-    if isfield(varargin{2},'ITI')
-        handles.ITI = varargin{2}.ITI;
+    if isfield(varargin{2},'random')
+        handles.random = varargin{2}.random;
     end
     if isfield(varargin{2},'random')
         handles.random = varargin{2}.random;
     end
-    if isfield(varargin{2},'samplingTime2P')
-        handles.samplingTime2P = varargin{2}.samplingTime2P;
-        handles.maxiPreWL = varargin{2}.maxiPreWL;
-        handles.maxiReps = varargin{2}.maxiReps;
-        handles.maxiITI = varargin{2}.maxiITI;
-    end
-    if isfield(varargin{2},'stimulusPath')
-        handles.stimulusPath = varargin{2}.stimulusPath;
+    if isfield(varargin{2},'random')
+        handles.random = varargin{2}.random;
     end
 else
     a = AuditoryStimulus;
