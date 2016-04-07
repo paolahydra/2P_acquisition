@@ -136,7 +136,11 @@ for i = 1:length(metadata.stimuli)
         end
     end
 end
-randKey = randperm(length(metadata.trials));
+if metadata.random
+    randKey = randperm(length(metadata.trials));
+else
+    randKey = 1:length(metadata.trials);
+end
 metadata.trials = metadata.trials(randKey);
 ALLstimuli = ALLstimuli(randKey);
 
