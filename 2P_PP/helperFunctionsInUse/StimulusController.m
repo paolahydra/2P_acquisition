@@ -68,7 +68,6 @@ if length(varargin) >= 2
     handles.startPadDur = varargin{2}.startPadDur;  %passed to the interpreter
     handles.fs = varargin{2}.fs;    %if not in input, default gets found here
     handles.maxVoltage = varargin{2}.maxVoltage;
-    handles.stimulusPath = varargin{2}.stimulusPath;
     if isfield(varargin{2},'ITI')
         handles.ITI = varargin{2}.ITI;
     end
@@ -145,9 +144,24 @@ handles.export.repetitions = handles.repetitions;
 handles.export.fs = handles.fs;
 handles.export.totalDur = handles.totalDur;        %passed to the interpreter
 handles.export.startPadDur = handles.startPadDur;  %passed to the interpreter
-handles.export.ITI = handles.ITI;
 handles.export.maxVoltage = handles.maxVoltage;
 handles.export.nRows = handles.nRows;
+
+if isfield(handles,'ITI')
+    handles.export.ITI = handles.ITI;
+end
+if isfield(handles,'random')
+    handles.export.random = handles.random;
+end
+if isfield(handles,'samplingTime2P')
+    handles.export.samplingTime2P = handles.samplingTime2P;
+    handles.export.maxiPreWL = handles.maxiPreWL;
+    handles.export.maxiReps = handles.maxiReps;
+    handles.export.maxiITI = handles.maxiITI;
+end
+if isfield(varargin{2},'stimulusPath')
+    handles.export.stimulusPath = handles.stimulusPath;
+end
 varargout{1} = handles.export;
 tdata = handles.tdata;
 stimuli = handles.stimuli;
