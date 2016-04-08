@@ -159,7 +159,7 @@ if isfield(handles,'samplingTime2P')
     handles.export.maxiReps = handles.maxiReps;
     handles.export.maxiITI = handles.maxiITI;
 end
-if isfield(varargin{2},'stimulusPath')
+if isfield(handles,'stimulusPath')
     handles.export.stimulusPath = handles.stimulusPath;
 end
 varargout{1} = handles.export;
@@ -232,7 +232,15 @@ function CalculateDur_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 x = stimulusInterpreterII(handles,0);
-totDurationMin = (x.totDurRun + length(x.trials)*handles.ITI)/60;
+if isfield(handles,'ITI')
+    totDurationMin = (x.totDurRun + length(x.trials)*handles.ITI)/60;
+else
+    if isfield(handles,'maxiPreWL')
+        totDurationMin = (x.totDurRun + handles.maxiPreWL)/60;
+    else
+        totDurationMin = (x.totDurRun)/60;
+    end
+end
 str = sprintf('%.1f', totDurationMin);
 set(handles.totDuration, 'String', str)
 

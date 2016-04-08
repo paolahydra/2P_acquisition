@@ -3,8 +3,6 @@ function [metadata, M, ST] = stimulusManagerMaxi(varargin)
         runfolder = varargin{1};
         if nargin >= 2
             metadata = varargin{2};
-            maxiReps = metadata.maxiReps; %temp fix
-            maxiPreWL = metadata.maxiPreWL; % temp fix
             metadata = StimulusController(runfolder, metadata);
         else
             metadata = StimulusController(runfolder);
@@ -19,14 +17,9 @@ function [metadata, M, ST] = stimulusManagerMaxi(varargin)
         plotting = 0;
     end
     
-    metadata.random = 1;
-    
-    
-    
-    
-    for j = 1 : maxiReps  
+    for j = 1 : metadata.maxiReps  
         [M(j).metadata, M(j).stimuli, M(j).ALLstimuli] = stimulusInterpreterII(metadata, plotting);
-        temp = zeros(maxiPreWL*metadata.fs,1);
+        temp = zeros(metadata.maxiPreWL*metadata.fs,1);
         for jj= 1:length(M(j).ALLstimuli)
             temp= [temp; M(j).ALLstimuli(jj).stim.stimulus];
         end

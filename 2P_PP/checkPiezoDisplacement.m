@@ -75,25 +75,18 @@ metadata.maxiReps       = 1;    % this script only supports 1.
 metadata.maxiITI        = 2;    % does not matter here. 
 metadata.startPadDur    = 0;    % no need to change here.
 
-%temp:
-metadata.ITI            = 0;        % fix temp
-maxiReps = metadata.maxiReps;       % temp fix
-maxiITI = metadata.maxiITI;         % temp fix
-maxiPreWL = metadata.maxiPreWL;     % temp fix
-
-
 % SPECIFIC SETTINGS:
 % define your stimuli:
 metadata.totalDur       = 4;    % this defines the period of each individual stimulus.
                                 % It includes the stimulus duration (which
                                 % you can define later) and the duration of
                                 % the pause following it.
-metadata.random         = 1;    % randomize stimuli?
+metadata.random         = 0;    % randomize stimuli?
 
-metadata.stimulusPath =  [];    % you can set your own path here to a saved stimulus set
+metadata.stimulusPath =  '/Users/galileo/Documents/stimuliSettings.mat';    % you can set your own path here to a saved stimulus set
 [metadata, M, ST] = stimulusManagerMaxi(runfolder,metadata,0); %let you define your stimulus composition.
 
-% figure; plot(ST(1).stimulus);
+figure; plot(1/metadata.fs: 1/metadata.fs : length(ST(1).stimulus)/metadata.fs , ST(1).stimulus);
 st2play = ST(1).stimulus;
 
 %% 5. play (and plot)
