@@ -80,6 +80,7 @@ metadata.totalDur = 14;
 metadata.startPadDur = 3;
 metadata.fs = 4e4;
 metadata.maxVoltage = 1.2; %use max 0.5 if powering a speaker!!
+metadata.random = 1;
 plotting = 0;
 metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\warmup130min';
 [metadata, stimuli] = stimulusManager(runfolder,metadata,plotting);

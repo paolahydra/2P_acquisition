@@ -26,8 +26,8 @@ function [metadata, M, ST] = stimulusManagerMaxi(varargin)
             digital = M(j).ALLstimuli(jj).stim.makeDigital;
             tempDig = [tempDig;  digital];
         end
-        ST(j).stimulus  = tempSt;
-        ST(j).digital   = tempDig;
+        ST(j).stimulus = tempSt;
+        ST(j).digital = tempSt;
     end
 end
 

@@ -41,15 +41,18 @@ ao(1).Name = 'Piezo-30um';
 % define a single stimulus
 stim = PI_DCoffset_PipStimulus;
 stim.totalDur = 6.1;
-stim.DCoffset = 0;
+
+stim.DCoffset = -0.9;
+stim.amplitude = 0.01;
+
 stim.modulationDirection = 0;
+stim.modulationFreqHz = 1;
 stim.startPadDur =0.5; %1.2800;
-stim.amplitude = 0.2;
 stim.maxVoltage = 4;
-stim.carrierFreqHz = 240;
+stim.carrierFreqHz = 6;
 stim.pipLatency = 0;
-stim.DCduration = 5.6;
-stim.pipDur = 5.5;
+stim.DCduration = 5;
+stim.pipDur = 4.5;
 
 
 assert(range(stim.stimulus) <= 10, 'Control input exceeds maximum allowed voltage (10V)')
@@ -59,7 +62,14 @@ assert(DC_offset + min(stim.stimulus) >= 0, 'Check the DC offset value of the pi
 stim.plot;
 st2play = stim.stimulus;
 
-
+%%
+stim = Chirp_up;
+stim.amplitude = 0.75;
+stim.startPadDur = 0.5;
+stim.chirpLength = 14;
+stim.totalDur = 16;
+stim.plot;
+st2play = stim.stimulus;
 
 %% 4b. stimulus - choice b
 % a continuous array of stimuli that you'll define.
@@ -81,25 +91,27 @@ metadata.totalDur       = 4;    % this defines the period of each individual sti
                                 % It includes the stimulus duration (which
                                 % you can define later) and the duration of
                                 % the pause following it.
-metadata.random         = 0;    % randomize stimuli?
+metadata.random         = 1;    % randomize stimuli?
 
-metadata.stimulusPath =  '/Users/galileo/Documents/stimuliSettings.mat';    % you can set your own path here to a saved stimulus set
+metadata.stimulusPath =  '';    % you can set your own path here to a saved stimulus set
 [metadata, M, ST] = stimulusManagerMaxi(runfolder,metadata,0); %let you define your stimulus composition.
 
 figure; plot(1/metadata.fs: 1/metadata.fs : length(ST(1).stimulus)/metadata.fs , ST(1).stimulus);
 st2play = ST(1).stimulus;
 
 %% 5. play (and plot)
-queueOutputData(s,stim.stimulus);
+queueOutputData(s,st2play);
 sensdata = startForeground(s);
 
 % plot
-ts = 0:1/settings.fs:stim.totalDur-1/settings.fs;
+% ts = 0:1/settings.fs:stim.totalDur-1/settings.fs;
+ts = 1/metadata.fs: 1/metadata.fs : length(st2play)/metadata.fs;
 handFig = figure('Name', 'online plotting','WindowStyle', 'docked'); hold on
 xlabel('time (seconds)')
 ylabel('Sensor Monitor (Volts)')
 title(sprintf('plotting'))
-plot(ts,stim.stimulus+DC_offset)
+
+plot(ts,st2play+DC_offset)
 plot(ts,sensdata,'-r')
 
 %% 6. clear things up

@@ -53,6 +53,15 @@ classdef AuditoryStimulus < hgsetget %matlab.mixin.SetGet % r2015a
             stimulus = [startPad;stimulus;endPad];
         end
         
+        %%-----Record digital ON - OFF stimulus.
+        function digitalStim = makeDigital(obj)
+            startPad = zeros(round(obj.sampleRate*obj.startPadDur),1);
+            endPad = zeros(round(obj.sampleRate*obj.endPadDur),1);
+            onPadDur = length(obj.stimulus) - (length(startPad) + length(endPad));
+            digital = ones(onPadDur,1);
+            digitalStim = [startPad;digital;endPad];
+        end
+        
         %%-----Playing----------------------------------------------------------------------
         function [varargout] = play(obj)
             player = audioplayer(obj.stimulus, obj.sampleRate);
