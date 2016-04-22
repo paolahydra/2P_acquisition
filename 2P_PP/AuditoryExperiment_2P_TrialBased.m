@@ -104,13 +104,14 @@ uiwait(msgbox({'Set directory and basename in ScanImage:';
 
 %% pip for freq tuning
 % % 
-metadata.ITI = 2; %seconds of laser shuttered between trials.
-metadata.totalDur = 9;
-metadata.startPadDur = 2.5; %1.2800;
+metadata.ITI = 1; %seconds of laser shuttered between trials.
+metadata.totalDur = 4;
+metadata.startPadDur = 2; %1.2800;
 metadata.fs = 4e4;
 metadata.maxVoltage = 4; %use max 0.5 if powering a speaker!!
 metadata.random = 1;
 plotting = 0;
+
 metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\PipsANDAmplitudes';
 [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
 
@@ -118,13 +119,29 @@ metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\PipsANDAmplitu
 %% OK 
 % PI_displacem + pips
 % 
-metadata.ITI            = 0.75; %seconds of laser shuttered between trials.
-metadata.totalDur       = 5;
-metadata.startPadDur    = 0.75; %1.2800;
+metadata.ITI            = 1; %seconds of laser shuttered between trials.
+metadata.totalDur       = 8;
+metadata.startPadDur    = 2; %1.2800;
+metadata.fs             = 4e4;
+metadata.maxVoltage     = 5; %use max 0.5 if powering a speaker!!
+metadata.random         = 1;
+plotting                = 0;
+metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\displANDPips.mat'; 
+[metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
+
+
+
+%% chirps
+% 
+metadata.ITI            = 2; %seconds of laser shuttered between trials.
+metadata.totalDur       = 16;
+metadata.startPadDur    = 2; %1.2800;
 metadata.fs             = 4e4;
 metadata.maxVoltage     = 4; %use max 0.5 if powering a speaker!!
 metadata.random         = 1;
-plotting                = 0;
+plotting                = 1;
+
+st2play = stim.stimulus;
 metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\displANDPips.mat'; 
 [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
 

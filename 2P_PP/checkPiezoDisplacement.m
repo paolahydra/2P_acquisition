@@ -52,7 +52,7 @@ stim.maxVoltage = 4;
 stim.carrierFreqHz = 6;
 stim.pipLatency = 0;
 stim.DCduration = 5;
-stim.pipDur = 4.5;
+stim.pipDur = 0;
 
 
 assert(range(stim.stimulus) <= 10, 'Control input exceeds maximum allowed voltage (10V)')
@@ -64,10 +64,26 @@ st2play = stim.stimulus;
 
 %%
 stim = Chirp_up;
-stim.amplitude = 0.75;
-stim.startPadDur = 0.5;
+stim.maxVoltage = 4;
+stim.amplitude = 0.5;
+stim.startPadDur = 0.7;
 stim.chirpLength = 14;
 stim.totalDur = 16;
+stim.plot;
+st2play = stim.stimulus;
+
+%%
+stim = PipStimulus;
+stim.maxVoltage = 4;
+stim.amplitude = 0.4;
+
+stim.startPadDur = 0.5;
+stim.pipDur = 14;
+stim.totalDur = 16;
+
+stim.carrierFreqHz = 2;
+stim.modulationFreqHz = 0.125;
+
 stim.plot;
 st2play = stim.stimulus;
 
@@ -91,9 +107,9 @@ metadata.totalDur       = 4;    % this defines the period of each individual sti
                                 % It includes the stimulus duration (which
                                 % you can define later) and the duration of
                                 % the pause following it.
-metadata.random         = 1;    % randomize stimuli?
+metadata.random         = 0;    % randomize stimuli?
 
-metadata.stimulusPath =  '';    % you can set your own path here to a saved stimulus set
+metadata.stimulusPath =  'C:\Users\Paola\Dropbox\Data\fly067_PP\fly067_run02\stimuliSettings.mat';    % you can set your own path here to a saved stimulus set
 [metadata, M, ST] = stimulusManagerMaxi(runfolder,metadata,0); %let you define your stimulus composition.
 
 figure; plot(1/metadata.fs: 1/metadata.fs : length(ST(1).stimulus)/metadata.fs , ST(1).stimulus);
@@ -105,7 +121,7 @@ sensdata = startForeground(s);
 
 % plot
 % ts = 0:1/settings.fs:stim.totalDur-1/settings.fs;
-ts = 1/metadata.fs: 1/metadata.fs : length(st2play)/metadata.fs;
+ts = 1/settings.fs: 1/settings.fs : length(st2play)/settings.fs;
 handFig = figure('Name', 'online plotting','WindowStyle', 'docked'); hold on
 xlabel('time (seconds)')
 ylabel('Sensor Monitor (Volts)')
@@ -117,4 +133,4 @@ plot(ts,sensdata,'-r')
 %% 6. clear things up
 delete(s)
 clear all
-
+close all
