@@ -3,9 +3,9 @@ function [metadata, varargout] = stimulusInterpreterII(metadata, plotting)
 % to be completed. Only supports random list for now.
 metadata.trials = [];
 metadata.totDurRun = 0;
-if ~isfield(metadata, 'totalDur')
+if ~isfield(metadata, 'endPadDur')
      a = AuditoryStimulus;
-    metadata.totalDur = a.totalDur;
+    metadata.endPadDur = a.endPadDur;
     delete(a)
 end
 if ~isfield(metadata, 'startPadDur')
@@ -84,14 +84,14 @@ for i = 1:length(metadata.stimuli)
             metadata.trials = cat(2, metadata.trials, rep_supp);
             stimuli(countStim).stim = eval(metadata.stimuli{i}); %make specific stim
             stimuli(countStim).stim.startPadDur = metadata.startPadDur;
-            stimuli(countStim).stim.totalDur = metadata.totalDur;
+            stimuli(countStim).stim.endPadDur = metadata.endPadDur;
             stimuli(countStim).stim.sampleRate = metadata.fs;
             stimuli(countStim).stim.maxVoltage = metadata.maxVoltage;
             for iprop = 1:size(subcombs, 2)
                 app = sub(iprop).values(subcombs(icombs, iprop));
                 set( stimuli(countStim).stim, eval('sub(iprop).prop{1}'), app )
             end
-            metadata.totDurRun = metadata.totDurRun + metadata.totalDur*metadata.repetitions(i);
+            metadata.totDurRun = metadata.totDurRun + stimuli(countStim).stim.totalDur*metadata.repetitions(i);
             if plotting 
 %             hf(i) = figure('WindowStyle', 'docked');
                 stimuli(countStim).stim.plot;
@@ -101,7 +101,7 @@ for i = 1:length(metadata.stimuli)
                 countALLStim = countALLStim + 1;
                 ALLstimuli(countALLStim).stim = eval(metadata.stimuli{i}); %make specific stim
                 ALLstimuli(countALLStim).stim.startPadDur = metadata.startPadDur;
-                ALLstimuli(countALLStim).stim.totalDur = metadata.totalDur;
+                ALLstimuli(countALLStim).stim.endPadDur = metadata.endPadDur;
                 ALLstimuli(countALLStim).stim.sampleRate = metadata.fs;
                 ALLstimuli(countALLStim).stim.maxVoltage = metadata.maxVoltage;
                 for iprop = 1:size(subcombs, 2)
@@ -116,11 +116,11 @@ for i = 1:length(metadata.stimuli)
         metadata.trials = cat(2, metadata.trials, rep_supp);
         stimuli(countStim).stim = eval(metadata.stimuli{i}); %make specific stim
         stimuli(countStim).stim.startPadDur = metadata.startPadDur;
-        stimuli(countStim).stim.totalDur = metadata.totalDur;
+        stimuli(countStim).stim.endPadDur = metadata.endPadDur;
         stimuli(countStim).stim.sampleRate = metadata.fs;
         stimuli(countStim).stim.maxVoltage = metadata.maxVoltage;
         metadata.haveSubstimuli(i) = 0;
-        metadata.totDurRun = metadata.totDurRun + metadata.totalDur*metadata.repetitions(i);
+        metadata.totDurRun = metadata.totDurRun + stimuli(countStim).stim.totalDur*metadata.repetitions(i);
         if plotting
 %             hf(i) = figure('WindowStyle', 'docked');
             stimuli(countStim).stim.plot;
@@ -130,7 +130,7 @@ for i = 1:length(metadata.stimuli)
             countALLStim = countALLStim + 1;
             ALLstimuli(countALLStim).stim = eval(metadata.stimuli{i}); %make specific stim
             ALLstimuli(countALLStim).stim.startPadDur = metadata.startPadDur;
-            ALLstimuli(countALLStim).stim.totalDur = metadata.totalDur;
+            ALLstimuli(countALLStim).stim.endPadDur = metadata.endPadDur;
             ALLstimuli(countALLStim).stim.sampleRate = metadata.fs;
             ALLstimuli(countALLStim).stim.maxVoltage = metadata.maxVoltage;
         end

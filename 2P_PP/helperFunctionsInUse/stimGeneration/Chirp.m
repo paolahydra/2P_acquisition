@@ -4,15 +4,16 @@ classdef Chirp < AuditoryStimulus
     % AVB 2015
     
     properties
-        startFrequency      = 90;
-        endFrequency        = 1500;
-        chirpLength         = 10;
+        startFrequency      = 2;
+        endFrequency        = 650;
+        chirpLength         = 8;
         envelopeCorrection  = 0;
     end
     
     properties (Dependent = true, SetAccess = private)
-        endPadDur
+%         endPadDur
         stimulus
+        totalDur
     end
     
     methods
@@ -50,10 +51,13 @@ classdef Chirp < AuditoryStimulus
             stimulus = obj.addPad(stimulus);
         end
         
-        function endPadDur = get.endPadDur(obj)
-            %calculate remaining interval
-            endPadDur = obj.totalDur - obj.chirpLength - obj.startPadDur;
-        end
+        function totalDur = get.totalDur(obj)
+            totalDur = obj.chirpLength + obj.startPadDur + obj.minEndPadDur;
+        end        
+%         function endPadDur = get.endPadDur(obj)
+%             %calculate remaining interval
+%             endPadDur = obj.totalDur - obj.chirpLength - obj.startPadDur;
+%         end
                 
         %%------Plot Spectogram--------------------------------------------------------------------
         function spectPlot(obj,varargin)

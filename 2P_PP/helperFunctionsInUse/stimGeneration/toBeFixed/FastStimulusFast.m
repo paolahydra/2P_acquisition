@@ -1,4 +1,4 @@
-classdef FastStimulusSlow < AuditoryStimulus
+classdef FastStimulusFast < AuditoryStimulus
     % Basic subclass for making (amplitude modulated) pips
     % put rng('shuffle') in startup
 
@@ -7,23 +7,23 @@ classdef FastStimulusSlow < AuditoryStimulus
         AM                  = 1;
         amplitude           = 0.2;      % [0,1], relative to max voltage
         singleStimDur       = 0.500;    % seconds
-        ipi                 = 0.524;
+        ipi                 = 0.524; %0.262;    % 8 datapoints at 15.6250Hz span 0.512sec
         pipDur              = 10;
         carrPhase           = -0.25;    % fixed within
     end
     
     properties (Dependent = true, SetAccess = private)
-        endPadDur
+%         endPadDur
         stimulus
     end
     properties (Dependent = false, SetAccess = private)
-        carrierRange        = 6:6:30;
+        carrierRange        = 240:20:280;
         carriers
     end
     
     methods
         %% constructor method
-        function obj = FastStimulusSlow()
+        function obj = FastStimulusFast()
             obj = obj@AuditoryStimulus;
             obj.carriers = randomizefrequencies(obj);
         end
@@ -64,10 +64,10 @@ classdef FastStimulusSlow < AuditoryStimulus
         end
         
         
-        function endPadDur = get.endPadDur(obj)
-            %calculate remaining interval
-            endPadDur = obj.totalDur - obj.pipDur - obj.startPadDur;
-        end
+%         function endPadDur = get.endPadDur(obj)
+%             %calculate remaining interval
+%             endPadDur = obj.totalDur - obj.pipDur - obj.startPadDur;
+%         end
     end    
 end
 

@@ -18,8 +18,9 @@ classdef ClickStimulus < AuditoryStimulus
         effectiveFreqHz
         numClicks
         substimulus
-        endPadDur
+%         endPadDur
         stimulus
+        totalDur
     end
     
     methods      
@@ -75,10 +76,15 @@ classdef ClickStimulus < AuditoryStimulus
             substimulus = substimulus';
         end
         
-        function endPadDur = get.endPadDur(obj)
-            %calculate remaining interval
+%         function endPadDur = get.endPadDur(obj)
+%             %calculate remaining interval
+%             stimDur = ceil(length(obj.substimulus)/obj.sampleRate);
+%             endPadDur = round(obj.totalDur - stimDur - obj.startPadDur);
+%         end
+
+        function totalDur = get.totalDur(obj)
             stimDur = ceil(length(obj.substimulus)/obj.sampleRate);
-            endPadDur = round(obj.totalDur - stimDur - obj.startPadDur);
+            totalDur = stimDur + obj.startPadDur + obj.endPadDur;
         end
         
         function stimulus = get.stimulus(obj)

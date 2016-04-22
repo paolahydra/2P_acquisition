@@ -13,7 +13,7 @@ classdef FastStimulusLong < AuditoryStimulus
     end
     
     properties (Dependent = true, SetAccess = private)
-        endPadDur
+%         endPadDur
         stimulus
     end
     properties (Dependent = false, SetAccess = private)
@@ -64,10 +64,10 @@ classdef FastStimulusLong < AuditoryStimulus
         end
         
         
-        function endPadDur = get.endPadDur(obj)
-            %calculate remaining interval
-            endPadDur = obj.totalDur - obj.pipDur - obj.startPadDur;
-        end
+%         function endPadDur = get.endPadDur(obj)
+%             %calculate remaining interval
+%             endPadDur = obj.totalDur - obj.pipDur - obj.startPadDur;
+%         end
     end    
 end
 

@@ -5,7 +5,7 @@ classdef PI_DCoffset_PipStimulus < AuditoryStimulus
         pipLatency          = 1.25;        % seconds after DCoffset change
         DCduration          = 3;        % counts as stimDuration
         %pip
-        amplitude           = 0.16;     % [0,1], relative to max voltage
+        amplitude           = 0.1;     % [0,1], relative to max voltage
         modulationDirection = 1;        % 1 up, -1 down, 0 bidirectional
         modulationDepth     = 1;        % [0,1]
         modulationFreqHz    = 2;
@@ -19,9 +19,10 @@ classdef PI_DCoffset_PipStimulus < AuditoryStimulus
     end
     
     properties (Dependent = true, SetAccess = private)
-        endPadDur
+%         endPadDur
         cyclesPerPip
         stimulus
+        totalDur
     end
     
     methods       
@@ -135,10 +136,13 @@ classdef PI_DCoffset_PipStimulus < AuditoryStimulus
             
         end
         
-        function endPadDur = get.endPadDur(obj)
-            %calculate remaining interval
-            endPadDur = obj.totalDur - obj.DCduration - obj.startPadDur;
-        end
+        function totalDur = get.totalDur(obj)
+            totalDur = obj.DCduration + obj.startPadDur + obj.endPadDur;
+        end        
+%         function endPadDur = get.endPadDur(obj)
+%             %calculate remaining interval
+%             endPadDur = obj.totalDur - obj.DCduration - obj.startPadDur;
+%         end
     end    
 end
 

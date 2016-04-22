@@ -6,8 +6,9 @@ classdef AuditoryStimulus < hgsetget %matlab.mixin.SetGet % r2015a
     properties
         sampleRate      = 4E4;
         startPadDur     = 2.5;    %seconds
-        minEndPadDur    = 0.5;    %seconds
-        totalDur        = 13;   %seconds  
+        endPadDur       = 2.5;    %04-16
+%         minEndPadDur    = 0.5;    %seconds
+%         totalDur        = 13;   %seconds  
         speakerOrder    = {'L','M','R'}; % From fly's point of view
         speaker         = 2;
         probe           = 'off';
@@ -15,7 +16,7 @@ classdef AuditoryStimulus < hgsetget %matlab.mixin.SetGet % r2015a
     end
     
     properties (Dependent = true, SetAccess = private)
-        maxStimDur
+%         maxStimDur
         stimDur     %this gives a common, general property wich is easily accessible
     end
     
@@ -26,9 +27,6 @@ classdef AuditoryStimulus < hgsetget %matlab.mixin.SetGet % r2015a
             stimDur = obj.totalDur - obj.startPadDur - obj.endPadDur;
         end
         
-        function maxStimDur = get.maxStimDur(obj)
-            maxStimDur = obj.totalDur - obj.startPadDur - obj.minEndPadDur;
-        end
         
         %%------Common Utilities---------------------------------------------------------
         function carrier = makeSine(obj,frequency,dur, varargin)

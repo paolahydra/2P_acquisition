@@ -18,9 +18,10 @@ classdef PI_PipStimulus < AuditoryStimulus
     end
     
     properties (Dependent = true, SetAccess = private)
-        endPadDur
+%         endPadDur
         cyclesPerPip
         stimulus
+        totalDur
     end
     
     methods       
@@ -109,9 +110,12 @@ classdef PI_PipStimulus < AuditoryStimulus
             
         end
         
-        function endPadDur = get.endPadDur(obj)
-            %calculate remaining interval
-            endPadDur = obj.totalDur - obj.pipDur - obj.startPadDur;
+        function totalDur = get.totalDur(obj)
+            totalDur = obj.pipDur + obj.startPadDur + obj.endPadDur;
+        end
+%         function endPadDur = get.endPadDur(obj)
+%             %calculate remaining interval
+%             endPadDur = obj.totalDur - obj.pipDur - obj.startPadDur;
         end
     end    
 end

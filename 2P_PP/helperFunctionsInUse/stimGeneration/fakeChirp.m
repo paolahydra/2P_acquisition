@@ -1,11 +1,14 @@
-classdef Chirp_up < AuditoryStimulus
+classdef fakeChirp < AuditoryStimulus
     % Basic subclass for courtship song
     %
     % AVB 2015
     
+    %% fix for frequencies
+      
     properties
-        startFrequency  = 2;
-        endFrequency    = 650;
+        startFrequency  = 200;
+        endFrequency    = 200;
+        corrector       = 0.6;
         chirpLength     = 8;
         amplitude       = 1; 
     end
@@ -33,12 +36,12 @@ classdef Chirp_up < AuditoryStimulus
             stimulus = modEnvelope.*stimulus;
             
             % Calculate ramp down 
-            ramp_correct = linspace(0.5,1,sampsPerChirp)';
+            ramp_correct = linspace(obj.corrector,obj.corrector,sampsPerChirp)';
             stimulus = ramp_correct.*stimulus; 
             
             % Scale the stim to the maximum voltage in the amp
-            maxFound = max(stimulus);
-            stimulus = (stimulus/maxFound)*obj.amplitude;
+%             maxFound = max(stimulus);
+            stimulus = (stimulus)*obj.amplitude;
             stimulus = stimulus * obj.maxVoltage;
             
             % Add pause at the beginning of of the stim

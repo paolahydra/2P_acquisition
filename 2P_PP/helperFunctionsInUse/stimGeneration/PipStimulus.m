@@ -4,7 +4,7 @@ classdef PipStimulus < AuditoryStimulus
     % SLH 2014
     
     properties
-        amplitude           = 1;        % [0,1], relative to max voltage
+        amplitude           = 0.1;        % [0,1], relative to max voltage
         modulationDepth     = 1;        % [0,1]
         modulationFreqHz    = 1;
         modulationPhase     = -1/4;     % betwwen (-1, 1), refers to a full cycle
@@ -17,7 +17,8 @@ classdef PipStimulus < AuditoryStimulus
     end
     
     properties (Dependent = true, SetAccess = private)
-        endPadDur
+%         endPadDur
+        totalDur
         cyclesPerPip
         stimulus
     end
@@ -86,14 +87,17 @@ classdef PipStimulus < AuditoryStimulus
             
         end
         
-        function endPadDur = get.endPadDur(obj)
-            %calculate remaining interval
-            if obj.numPips == 1
-                endPadDur = obj.totalDur - obj.pipDur - obj.startPadDur;
-            else
-                stimDur = obj.pipDur * obj.numPips + obj.ipi*(obj.numPips - 1);
-                endPadDur = floor(obj.totalDur - stimDur - obj.startPadDur);
-            end
+%         function endPadDur = get.endPadDur(obj)
+%             %calculate remaining interval
+%             if obj.numPips == 1
+%                 endPadDur = obj.totalDur - obj.pipDur - obj.startPadDur;
+%             else
+%                 stimDur = obj.pipDur * obj.numPips + obj.ipi*(obj.numPips - 1);
+%                 endPadDur = floor(obj.totalDur - stimDur - obj.startPadDur);
+%             end
+%         end
+        function totalDur = get.totalDur(obj)
+            totalDur = obj.pipDur + obj.startPadDur + obj.endPadDur;
         end
     end    
 end

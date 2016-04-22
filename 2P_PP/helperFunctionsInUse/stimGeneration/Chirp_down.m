@@ -11,8 +11,9 @@ classdef Chirp_down < AuditoryStimulus
     end
     
     properties (Dependent = true, SetAccess = private)
-        endPadDur
+%         endPadDur
         stimulus
+        totalDur
     end
     
     methods
@@ -32,7 +33,7 @@ classdef Chirp_down < AuditoryStimulus
             stimulus = modEnvelope.*stimulus;
             
             % Calculate ramp down 
-            ramp_correct = linspace(1,0.25,sampsPerChirp)';
+            ramp_correct = linspace(1,0.5,sampsPerChirp)';
             stimulus = ramp_correct.*stimulus; 
             
             % Scale the stim to the maximum voltage in the amp
@@ -43,11 +44,13 @@ classdef Chirp_down < AuditoryStimulus
             % Add pause at the beginning of of the stim
             stimulus = obj.addPad(stimulus);
         end
-        
-        function endPadDur = get.endPadDur(obj)
-            %calculate remaining interval
-            endPadDur = obj.totalDur - obj.chirpLength - obj.startPadDur;
-        end
+        function totalDur = get.totalDur(obj)
+            totalDur = obj.chirpLength + obj.startPadDur + obj.endPadDur;
+        end   
+%         function endPadDur = get.endPadDur(obj)
+%             %calculate remaining interval
+%             endPadDur = obj.totalDur - obj.chirpLength - obj.startPadDur;
+%         end
                 
         %%------Plot Spectogram--------------------------------------------------------------------
         function spectPlot(obj,varargin)

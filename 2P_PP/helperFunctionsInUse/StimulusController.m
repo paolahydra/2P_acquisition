@@ -64,7 +64,7 @@ else
     handles.runfolder = getpref('scimSavePrefs', 'dataDirectory');
 end
 if length(varargin) >= 2
-    handles.totalDur = varargin{2}.totalDur;        %passed to the interpreter
+    handles.endPadDur = varargin{2}.endPadDur;        %passed to the interpreter
     handles.startPadDur = varargin{2}.startPadDur;  %passed to the interpreter
     handles.fs = varargin{2}.fs;    %if not in input, default gets found here
     handles.maxVoltage = varargin{2}.maxVoltage;
@@ -85,7 +85,7 @@ if length(varargin) >= 2
     end
 else
     a = AuditoryStimulus;
-    handles.totalDur = a.totalDur;
+    handles.endPadDur = a.endPadDur;
     handles.startPadDur = a.startPadDur;
     handles.fs = a.sampleRate;
     handles.maxVoltage = a.maxVoltage;
@@ -142,7 +142,7 @@ handles.export.full = handles.tdata;
 handles.export.stimuli = handles.stimuli;
 handles.export.repetitions = handles.repetitions;
 handles.export.fs = handles.fs;
-handles.export.totalDur = handles.totalDur;        %passed to the interpreter
+handles.export.endPadDur = handles.endPadDur;        %passed to the interpreter
 handles.export.startPadDur = handles.startPadDur;  %passed to the interpreter
 handles.export.maxVoltage = handles.maxVoltage;
 handles.export.nRows = handles.nRows;

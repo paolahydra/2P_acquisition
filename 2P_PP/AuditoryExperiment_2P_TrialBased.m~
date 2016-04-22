@@ -111,8 +111,8 @@ metadata.endPadDur      = 1.5;
 metadata.fs             = 4e4;
 metadata.maxVoltage     = 5; %use max 0.5 if powering a speaker!!
 metadata.random         = 1;
-plotting                = 1;
-metadata.stimulusPath =  [];%'C:\Users\Paola\Dropbox\Data\stimSettings\PipsANDAmplitudes';
+plotting = 0;
+metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\PipsANDAmplitudes';
 [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
 
 
