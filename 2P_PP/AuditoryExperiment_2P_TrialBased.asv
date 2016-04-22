@@ -75,56 +75,16 @@ uiwait(msgbox({'Set directory and basename in ScanImage:';
 
 
 %% 2. decide stimulus composition 
-
-% decide which stimuli to use and general structure and make actual trial list
-%add random in the input and function
-
-% %CHIRPS
-% metadata.ITI = 3; %seconds of laser shuttered between trials.
-% metadata.totalDur = 12;
-% metadata.startPadDur =1.5; %1.2800;
-% metadata.fs = 4e4;
-% metadata.maxVoltage = 4; %use max 0.5 if powering a speaker!! % 4V == 12um is the new value for 30um piezo
-% plotting = 1;
-% metadata.stimulusPath = [];  %add correct path
-% [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
-
-% %OK
-% pip for freq tuning -- 3 CYCLES
-
-% metadata.ITI = 0.5; %seconds of laser shuttered between trials.
-% metadata.totalDur = 4;%3.5;
-% metadata.startPadDur =0.75; %1.2800;
-% metadata.fs = 4e4;
-% metadata.maxVoltage = 4; %use max 0.5 if powering a speaker!!
-% plotting = 0;
-% metadata.stimulusPath = [];  %add correct path
-% [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
-
-
-%% pip for freq tuning
 % % 
-metadata.ITI = 2; %seconds of laser shuttered between trials.
-metadata.totalDur = 9;
-metadata.startPadDur = 2.5; %1.2800;
-metadata.fs = 4e4;
-metadata.maxVoltage = 4; %use max 0.5 if powering a speaker!!
-metadata.random = 1;
-plotting = 0;
-metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\PipsANDAmplitudes';
-[metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
-
-
-%% OK 
-% PI_displacem + pips
-% 
-metadata.ITI = 0.75; %seconds of laser shuttered between trials.
-metadata.totalDur = 5;
-metadata.startPadDur =0.75; %1.2800;
-metadata.fs = 4e4;
-metadata.maxVoltage = 4; %use max 0.5 if powering a speaker!!
-plotting = 0;
-metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\displANDPips.mat'; 
+metadata.ITI            = 0.6; %seconds of laser shuttered between trials.
+% metadata.totalDur     = 9;
+metadata.startPadDur    = 2.2; %1.2800;
+metadata.endPadDur      = 1.3;
+metadata.fs             = 4e4;
+metadata.maxVoltage     = 5; %use max 0.5 if powering a speaker!!
+metadata.random         = 1;
+plotting                = 1;
+metadata.stimulusPath =  'C:\Users\Paola\Dropbox\Data\stimSettings\fullSet_JONs';
 [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
 
 

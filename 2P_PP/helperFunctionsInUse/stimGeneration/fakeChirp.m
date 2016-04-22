@@ -7,7 +7,6 @@ classdef fakeChirp < AuditoryStimulus
       
     properties
         startFrequency  = 200;
-        endFrequency    = 200;
         corrector       = 0.6;
         chirpLength     = 8;
         amplitude       = 1; 
@@ -23,7 +22,7 @@ classdef fakeChirp < AuditoryStimulus
         %%------Constructor-----------------------------------------------------------------
         function stimulus = get.stimulus(obj)
             stimTime = (1/obj.sampleRate):(1/obj.sampleRate):obj.chirpLength;
-            stimulus = chirp(stimTime,obj.startFrequency,stimTime(end),obj.endFrequency)';
+            stimulus = chirp(stimTime,obj.startFrequency,stimTime(end),obj.startFrequency)';
 %             spectrogram(y,256,250,256,obj.sampleRate,'yaxis')
             
             % Calculate envelope

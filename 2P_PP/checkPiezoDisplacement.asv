@@ -39,22 +39,10 @@ ao(1).Name = 'Piezo-30um';
 
 %% 4a. stimulus - choice a
 % define a single stimulus
-stim = PI_DCoffset_PipStimulus;
-stim.totalDur = 6.1;
-
-stim.DCoffset = -0.9;
-stim.amplitude = 0.01;
-
-stim.modulationDirection = 0;
-stim.modulationFreqHz = 1;
-stim.startPadDur =0.5; %1.2800;
-stim.maxVoltage = 4;
-stim.carrierFreqHz = 6;
-stim.pipLatency = 0;
-stim.DCduration = 5;
-stim.pipDur = 4.5;
-
-
+stim = PI_DCoffset;
+stim.endPadDur = 0.5;
+stim.DCoffset = 0.9;
+stim.maxVoltage = 5;
 assert(range(stim.stimulus) <= 10, 'Control input exceeds maximum allowed voltage (10V)')
 assert(DC_offset + max(stim.stimulus) <= 10, 'Check the DC offset value of the piezo')
 assert(DC_offset + min(stim.stimulus) >= 0, 'Check the DC offset value of the piezo')
@@ -76,7 +64,7 @@ st2play = stim.stimulus;
 
 % GENERAL SETTINGS (check once) and no need to change after that.
 %set here the command voltage to the piezo you don't want to exceed.
-metadata.maxVoltage     = 4;     % 4V == 12um is the value for 30um piezo
+metadata.maxVoltage     = 5;     % 4V == 12um is the value for 30um piezo
 runfolder = fileparts(userpath); %will write the stimulus settings in this folder, and overwrite everytime 
 metadata.samplingTime2P = 0.0640; % period in seconds of my acquisition at 15.625 Hz. Doesn't matter for the purposes of this script. Ignore.
 metadata.fs             = settings.fs;
