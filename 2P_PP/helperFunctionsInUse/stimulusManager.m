@@ -16,8 +16,7 @@ function [metadata, stimuli, ALLstimuli] = stimulusManager(varargin)
     else
         plotting = 0;
     end
-    
-    metadata.random = 1;
+
     [metadata, stimuli, ALLstimuli] = stimulusInterpreterII(metadata, plotting);
 end
 
