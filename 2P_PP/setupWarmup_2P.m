@@ -76,7 +76,7 @@ uiwait(msgbox({'Set directory and basename in ScanImage:';
 % decide which stimuli to use and general structure and make actual trial list
 %add random in the input and function
 metadata.ITI = 0.5; %seconds of laser shuttered between trials.
-metadata.totalDur = 14;
+metadata.endPadDur = 5;
 metadata.startPadDur = 3;
 metadata.fs = 4e4;
 metadata.maxVoltage = 1.2; %use max 0.5 if powering a speaker!!

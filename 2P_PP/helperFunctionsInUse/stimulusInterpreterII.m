@@ -137,12 +137,28 @@ for i = 1:length(metadata.stimuli)
     end
 end
 if metadata.random
-    randKey = randperm(length(metadata.trials));
+    if length(unique(metadata.repetitions)) == 1 && metadata.shuffleWithin
+        trials = 1:countStim;
+            sh_trials = [];
+            sh_ALLstimuli = [];
+            for jp = 1 : unique(metadata.repetitions)
+                randKey = randperm(countStim);
+                sh_trials = cat(2, sh_trials, trials(randKey));
+                sh_ALLstimuli = cat(2, sh_ALLstimuli, stimuli(randKey));
+            end
+            metadata.trials = sh_trials;
+            ALLstimuli = sh_ALLstimuli;
+    else
+        randKey = randperm(length(metadata.trials));
+        metadata.trials = metadata.trials(randKey);
+        ALLstimuli = ALLstimuli(randKey);
+    end
 else
     randKey = 1:length(metadata.trials);
+    metadata.trials = metadata.trials(randKey);
+    ALLstimuli = ALLstimuli(randKey);
 end
-metadata.trials = metadata.trials(randKey);
-ALLstimuli = ALLstimuli(randKey);
+
 
 if nargout >= 2
     varargout{1} = stimuli;

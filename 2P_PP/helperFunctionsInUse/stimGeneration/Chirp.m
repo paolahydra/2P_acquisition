@@ -6,7 +6,7 @@ classdef Chirp < AuditoryStimulus
     properties
         startFrequency      = 2;
         endFrequency        = 650;
-        chirpLength         = 8;
+        chirpLength         = 12;
         envelopeCorrection  = 0;
     end
     

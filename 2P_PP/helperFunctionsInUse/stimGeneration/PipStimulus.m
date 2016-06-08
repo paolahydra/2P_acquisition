@@ -14,6 +14,7 @@ classdef PipStimulus < AuditoryStimulus
         numPips             = 1;
         pipDur              = 5;
         ipi                 = 0.034;
+%         correctAmplFreq     = 1;
     end
     
     properties (Dependent = true, SetAccess = private)
@@ -45,7 +46,7 @@ classdef PipStimulus < AuditoryStimulus
             load(g.correctFreqDisplacPiezo.Piezo30um)
             % Make pip
             pip = obj.makeSine(obj.carrierFreqHz,obj.pipDur,(obj.carrierPhase / obj.carrierFreqHz));
-            
+                
             % Calculate envelope
             sampsPerPip = length(pip);
             switch lower(obj.envelope)
@@ -77,7 +78,11 @@ classdef PipStimulus < AuditoryStimulus
             
             % Scale the stim to the maximum voltage in the amp
             maxFound = max(abs(stimulus));
-            amplitudeCorrect = obj.amplitude * cf30(obj.carrierFreqHz);
+%             if obj.correctAmplFreq
+                amplitudeCorrect = obj.amplitude * cf30(obj.carrierFreqHz);
+%             else
+%                 amplitudeCorrect = obj.amplitude;
+%             end
             assert(amplitudeCorrect <= 1, 'Corrected amplitude as function of frequency exceeds maxVoltage. Reduce amplitude or maximum frequency')
             stimulus = (stimulus/maxFound)*amplitudeCorrect;
             stimulus = stimulus * obj.maxVoltage;

@@ -6,7 +6,7 @@ classdef Chirp_down < AuditoryStimulus
     properties
         startFrequency  = 650;
         endFrequency    = 2;
-        chirpLength     = 8;
+        chirpLength     = 12;
         amplitude       = 1; 
     end
     
@@ -25,7 +25,7 @@ classdef Chirp_down < AuditoryStimulus
             
             % Calculate envelope
             sampsPerChirp = length(stimulus);
-            sampsPerRamp = floor(sampsPerChirp/10);
+            sampsPerRamp = floor(sampsPerChirp/20);
             ramp = sin(linspace(0,pi/2,sampsPerRamp));
             modEnvelope = [ramp,ones(1,sampsPerChirp - sampsPerRamp*2),fliplr(ramp)]';
 
@@ -33,7 +33,7 @@ classdef Chirp_down < AuditoryStimulus
             stimulus = modEnvelope.*stimulus;
             
             % Calculate ramp down 
-            ramp_correct = linspace(1,0.5,sampsPerChirp)';
+            ramp_correct = linspace(0.9,0.5,sampsPerChirp)';
             stimulus = ramp_correct.*stimulus; 
             
             % Scale the stim to the maximum voltage in the amp

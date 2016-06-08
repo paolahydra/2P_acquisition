@@ -73,30 +73,22 @@ uiwait(msgbox({'Set directory and basename in ScanImage:';
                ' '},                                ...
                'scanimage', 'modal'));
 
-
 %% 2. decide stimulus composition 
 
 metadata.samplingTime2P = 0.0640;
 metadata.fs             = 4e4;
-metadata.maxVoltage     = 4;     % 4V == 12um is the new value for 30um piezo
+metadata.maxVoltage     = 5;    % 4V == 12um is the new value for 30um piezo
 
-metadata.maxiITI        = 5;    % seconds of laser shuttered between maxi-trials.
-metadata.maxiPreWL      = metadata.samplingTime2P*16 * 3;     % last is ~seconds
-metadata.maxiReps       = 1;
-metadata.totalDur       = metadata.samplingTime2P * 56;     %8X = 0.512sec; 
-metadata.startPadDur    = metadata.samplingTime2P * 0;
-metadata.random         = 1;
+metadata.maxiITI        = 2;    % seconds of laser shuttered between maxi-trials.
+metadata.maxiPreWL      = 2;    %metadata.samplingTime2P*16 * 3;     % last is ~seconds
+metadata.maxiReps       = 8;
+metadata.endPadDur      = 0;   %metadata.samplingTime2P * 56;     %8X = 0.512sec; 
+metadata.startPadDur    = 0;    %metadata.samplingTime2P * 0;
+metadata.random         = 0;
 plotting                = 0;
 
-
-%% % PI_displacem + pips
-metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\displANDPips.mat'; 
-[metadata, M, ST] = stimulusManagerMaxi(runfolder,metadata,plotting);
-%% %
-metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\PipsANDAmplitudes';
-[metadata, M, ST] = stimulusManagerMaxi(runfolder,metadata,plotting);
-%% %
-metadata.stimulusPath = 'C:\Users\Paola\Dropbox\Data\stimSettings\conitinPipsOnly';
+%%
+metadata.stimulusPath = [];   % 'C:\Users\Paola\Dropbox\Data\stimSettings\fullSet_JONs_optimizedTrials';
 [metadata, M, ST] = stimulusManagerMaxi(runfolder,metadata,plotting);
 
 
@@ -170,7 +162,7 @@ if strcmp(readygo, 'Start')
         extTrig(end) = 0;
         extTrig(end-1) = 0;
         
-        queueOutputData(s,[stim, extTrig, digital]);
+        queueOutputData(s,[stim, extTrig]);
         
         data = s.startForeground;
         fprintf('Completed.\n')

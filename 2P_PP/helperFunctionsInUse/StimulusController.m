@@ -68,6 +68,7 @@ if length(varargin) >= 2
     handles.startPadDur = varargin{2}.startPadDur;  %passed to the interpreter
     handles.fs = varargin{2}.fs;    %if not in input, default gets found here
     handles.maxVoltage = varargin{2}.maxVoltage;
+    handles.shuffleWithin = varargin{2}.shuffleWithin;
     if isfield(varargin{2},'ITI')
         handles.ITI = varargin{2}.ITI;
     end
@@ -89,6 +90,7 @@ else
     handles.startPadDur = a.startPadDur;
     handles.fs = a.sampleRate;
     handles.maxVoltage = a.maxVoltage;
+    handles.shuffleWithin = a.shuffleWithin;
     delete(a)
     handles.ITI = 0;
     handles.stimulusPath = [];
@@ -144,6 +146,7 @@ handles.export.repetitions = handles.repetitions;
 handles.export.fs = handles.fs;
 handles.export.endPadDur = handles.endPadDur;        %passed to the interpreter
 handles.export.startPadDur = handles.startPadDur;  %passed to the interpreter
+handles.export.shuffleWithin = handles.shuffleWithin;
 handles.export.maxVoltage = handles.maxVoltage;
 handles.export.nRows = handles.nRows;
 

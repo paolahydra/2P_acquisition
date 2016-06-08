@@ -11,6 +11,7 @@
 % 0. check or set preferences
 if ~ispref('scimSavePrefs')
     dataDirectory = uigetdir(pwd, 'Select a base folder for saving all your data:');
+    
     setpref('scimSavePrefs', {'dataDirectory', 'flyNum'}, {dataDirectory, 1});
 elseif ~ispref('scimSavePrefs', 'flyNum')
     addpref('scimSavePrefs', 'flyNum', 0)           % setpref('scimSavePrefs', 'flyNum', 0); %(reset)
@@ -53,6 +54,8 @@ run = runs +1;
 runtag = ['fly', num2str(flyNum, '%03d'), '_run', num2str(run, '%02d')];
 runfolder = fullfile(flyfolder, runtag);
 mkdir(runfolder)
+runfolderOT = fullfile(runfolder, 'originalTiffs');
+mkdir(runfolderOT)
 cd(runfolder)
 
 % full metadata file: 'filesave'
@@ -73,24 +76,66 @@ uiwait(msgbox({'Set directory and basename in ScanImage:';
                ' '},                                ...
                'scanimage', 'modal'));
 
-
-%% 2. decide stimulus composition 
+%% 2. aVLP
 % % 
-metadata.ITI            = 0.6; %seconds of laser shuttered between trials.
+clipboard('copy',[runtag, '_']);
+metadata.ITI            = 0.75; %changed. Kept here to avoid errors in interpreter (for now)
+ITIpercent              = 0.6;
 % metadata.totalDur     = 9;
-metadata.startPadDur    = 2.2; %1.2800;
-metadata.endPadDur      = 1.3;
+metadata.startPadDur    = 2; %1.2800;
+metadata.endPadDur      = 0.75;
+metadata.shuffleWithin  = 1;
 metadata.fs             = 4e4;
 metadata.maxVoltage     = 5; %use max 0.5 if powering a speaker!!
 metadata.random         = 1;
-plotting                = 1;
-metadata.stimulusPath =  'C:\Users\Paola\Dropbox\Data\stimSettings\fullSet_JONs';
+plotting                = 0;
+metadata.stimulusPath =  'C:\Users\Paola\Dropbox\Data\stimSettings\aVLP_explorer';     %WED_full';  %JON_FINAL';
+[metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
+%% 2. decide stimulus composition 
+% % 
+clipboard('copy',[runtag, '_']);
+metadata.ITI            = 0.7; %changed. Kept here to avoid errors in interpreter (for now)
+ITIpercent              = 0.7;
+% metadata.totalDur     = 9;
+metadata.shuffleWithin  = 1;
+metadata.startPadDur    = 1.8; %1.2800;
+metadata.endPadDur      = 0.8;
+metadata.fs             = 4e4;
+metadata.maxVoltage     = 5; %use max 0.5 if powering a speaker!!
+metadata.random         = 1;
+plotting                = 0;
+metadata.stimulusPath =  'C:\Users\Paola\Dropbox\Data\stimSettings\JON_FINAL'; %BRAIN_explorer';    %WED_full_nonOPT   %WED_full';  %JON_FINAL';
+[metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
+%% 2. decide stimulus composition 
+% % 
+clipboard('copy',[runtag, '_']);
+metadata.ITI            = 0.75; %changed. Kept here to avoid errors in interpreter (for now)
+ITIpercent              = 0.75;
+% metadata.totalDur     = 9;
+metadata.startPadDur    = 2; %1.2800;
+metadata.endPadDur      = 2;
+metadata.shuffleWithin  = 1;
+metadata.fs             = 4e4;
+metadata.maxVoltage     = 5; %use max 0.5 if powering a speaker!!
+metadata.random         = 1;
+plotting                = 0;
+metadata.stimulusPath =  'C:\Users\Paola\Dropbox\Data\stimSettings\Exploratory_GC6S';
 [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
 
+%%
+% clear stimuli ALLstimuli
+% stimuli = M;
+% ALLstimuli = ST;
 
 %% 4. play, synch and save, experimental series
 % acquisition-specific settings:
 clc
+if ~metadata.random 
+    warning('trials non randomized')
+    warning('trials non randomized')
+    warning('trials non randomized')
+    warning('trials non randomized')
+end
 settings.outputchannels =[0,1]; 
 settings.inputchannels = [5,6];
 settings.trigOut = 'port0/line0';
@@ -131,9 +176,13 @@ ao(2).Name = 'Trigger';
 % do = s.addDigitalChannel(settings.devID,settings.trigOut,'OutputOnly');
 % set input channels:
 
-pauseTime = metadata.ITI * (length(metadata.trials)-1); 
+totTime = (1+ITIpercent) * metadata.totDurRun; 
 fprintf('\nThis run consists of %4d trials\n', length(metadata.trials) )
-fprintf('It will take %3.2f minutes to complete\n\n', (metadata.totDurRun + pauseTime)/60 )
+fprintf('It will take %3.2f minutes to complete\n\n', totTime/60 )
+
+% pauseTime = metadata.ITI * (length(metadata.trials)-1); 
+% fprintf('It will take %3.2f minutes to complete\n\n', (metadata.totDurRun + pauseTime)/60 )
+
 
 
 % start acquisition
@@ -147,32 +196,27 @@ if strcmp(readygo, 'Start')
     % loop into trials
     for t = 1:length(ALLstimuli)   
         fprintf('Trial n. %3d started...\t', t)
-        stim = ALLstimuli(t).stim;
-        
-        
-%         stim.maxVoltage = metadata.maxVoltage;
-%         stim.plot;
-
-
-        extTrig = 3.3*ones(size(stim.stimulus)); %try with 1.5V? ao trigger to minimize noise on the other channel.
+        stim = ALLstimuli(t).stim.stimulus;
+        stimDur = ALLstimuli(t).stim.stimDur;
+        extTrig = 3.3*ones(size(stim)); %try with 1.5V? ao trigger to minimize noise on the other channel.
         
         extTrig(1) = 0;
         extTrig(end) = 0;
         extTrig(end-1) = 0;
         
-        queueOutputData(s,[stim.stimulus extTrig]); %check channel order and everything
+        queueOutputData(s,[stim, extTrig]); %check channel order and everything
         data = s.startForeground;
         fprintf('Completed.\n')
         data = data'; %now data is nxm, where n is the number of input channels in the session, and m is the number of scans acquired.
         datawrite = t * ones(1, size(data,2));
         datawrite = cat(1, data, datawrite);
-        datawrite = cat(1, datawrite, stim.stimulus' );
+        datawrite = cat(1, datawrite, stim(:)' );
         fwrite(fid1,datawrite,'single');
         close
         if FS.Stop()
             break
         end
-        pause(metadata.ITI);
+        pause(stimDur * ITIpercent);
 
     end
     fclose(fid1);
@@ -183,6 +227,7 @@ if strcmp(readygo, 'Start')
     dataInput = fread(fid2, [settings.aiNchan + 2,inf], 'single');
     fclose(fid2);
     metadata.settings = settings;
+    metadata.ITIpercent = ITIpercent;
     save(filesave,'metadata', 'dataInput', 'stimuli','ALLstimuli', '-v7.3');
     delete(fullfile(runfolder, 'log.bin'))
 end
