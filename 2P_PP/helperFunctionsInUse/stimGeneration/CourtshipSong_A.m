@@ -14,7 +14,8 @@ classdef CourtshipSong_A < AuditoryStimulus
         %%------Constructor-----------------------------------------------------------------
         function stimulus = get.stimulus(obj)
             % Read in courtship song recording
-            [stimulus, obj.sampleRate] = audioread('C:\Users\Paola\Documents\GitHub\2P_acquisition\2P_PP\helperFunctionsInUse\stimGeneration\usableSnippets\LongCourtship_PP.wav');
+            g = getpref;
+            [stimulus, obj.sampleRate] = audioread(g.broadBandSnippets.CourtshipSong_A);
             
             maxFound = max(abs(stimulus));
             stimulus = (stimulus/maxFound);

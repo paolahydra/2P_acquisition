@@ -15,6 +15,7 @@ set(0,'DefaultFigureWindowStyle','docked')
 settings.outputchannels = 0; 
 settings.inputchannels = 5;
 settings.trigOut = 'port0/line0';
+
 settings.devID = 'Dev3';
 settings.fs = 4e4;
 settings.aiNchan = length(settings.inputchannels);
@@ -58,7 +59,7 @@ sensdata = startForeground(s);
 % define a single stimulus
 stim = PipStimulus;
 stim.endPadDur = 0.5;
-stim.amplitude = 0.3;
+stim.amplitude = 0.3; %0.18;
 stim.maxVoltage = 5;
 stim.carrierFreqHz =8;
 stim.modulationFreqHz = 0.25;
@@ -78,9 +79,9 @@ sensdata = startForeground(s);
 % define a single stimulus
 stim = PipStimulus;
 stim.endPadDur = 0.5;
-stim.amplitude = 0.2;
+stim.amplitude = 0.12;
 stim.maxVoltage = 5;
-stim.carrierFreqHz =8;
+stim.carrierFreqHz =200;
 stim.modulationFreqHz = 4;
 
 stim.pipDur = 8;
@@ -96,9 +97,10 @@ sensdata = startForeground(s);
 
 %%
 stim = Chirp_up;
-stim.amplitude = 0.75;
+stim.amplitude = 0.12;
+stim.maxVoltage = 5;
 stim.startPadDur = 0.5;
-stim.chirpLength = 14;
+stim.chirpLength = 12;
 stim.endPadDur = 0.5;
 stim.plot;
 st2play = stim.stimulus;

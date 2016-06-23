@@ -79,10 +79,10 @@ uiwait(msgbox({'Set directory and basename in ScanImage:';
 %% 2. aVLP
 % % 
 clipboard('copy',[runtag, '_']);
-metadata.ITI            = 0.75; %changed. Kept here to avoid errors in interpreter (for now)
-ITIpercent              = 0.6;
+metadata.ITI            = 0.65; %changed. Kept here to avoid errors in interpreter (for now)
+ITIpercent              = 0.65;
 % metadata.totalDur     = 9;
-metadata.startPadDur    = 2; %1.2800;
+metadata.startPadDur    = 1.8; %1.2800;
 metadata.endPadDur      = 0.75;
 metadata.shuffleWithin  = 1;
 metadata.fs             = 4e4;

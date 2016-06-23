@@ -79,10 +79,10 @@ uiwait(msgbox({'Set directory and basename in ScanImage:';
 %% 2. aVLP
 % % 
 clipboard('copy',[runtag, '_']);
-metadata.ITI            = 0.75; %changed. Kept here to avoid errors in interpreter (for now)
-ITIpercent              = 0.6;
+metadata.ITI            = 0.65; %changed. Kept here to avoid errors in interpreter (for now)
+ITIpercent              = 0.65;
 % metadata.totalDur     = 9;
-metadata.startPadDur    = 2; %1.2800;
+metadata.startPadDur    = 1.8; %1.2800;
 metadata.endPadDur      = 0.75;
 metadata.shuffleWithin  = 1;
 metadata.fs             = 4e4;
@@ -104,7 +104,7 @@ metadata.fs             = 4e4;
 metadata.maxVoltage     = 5; %use max 0.5 if powering a speaker!!
 metadata.random         = 1;
 plotting                = 0;
-metadata.stimulusPath =  'C:\Users\Paola\Dropbox\Data\stimSettings\JON_FINAL'; %BRAIN_explorer';    %WED_full_nonOPT   %WED_full';  %JON_FINAL';
+metadata.stimulusPath =  'C:\Users\Paola\Dropbox\Data\stimSettings\stim_FINAL'; %BRAIN_explorer';    %WED_full_nonOPT   %WED_full';  %JON_FINAL';
 [metadata, stimuli, ALLstimuli] = stimulusManager(runfolder,metadata,plotting);
 %% 2. decide stimulus composition 
 % % 

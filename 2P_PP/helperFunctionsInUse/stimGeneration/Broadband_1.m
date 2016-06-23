@@ -1,7 +1,5 @@
-classdef CourtshipSong_B < AuditoryStimulus
-    % Basic subclass for courtship song
-    %
-    % AVB 2015
+classdef Broadband_1 < AuditoryStimulus
+    
     properties
         sineAmplitude        = 0.2;  
     end
@@ -16,7 +14,9 @@ classdef CourtshipSong_B < AuditoryStimulus
             % Read in courtship song recording
             g = getpref;
             [stimulus, obj.sampleRate] = audioread(g.broadBandSnippets.CourtshipSong_B);
-
+            stimulus = stimulus(1:4e4);
+%             stimulus(end) = [];
+            
             maxFound = max(abs(stimulus));
             stimulus = (stimulus/maxFound);
             sinePeak = 0.2; %given the filepath and the normalization. Approximative, more like 90prctile than peak.

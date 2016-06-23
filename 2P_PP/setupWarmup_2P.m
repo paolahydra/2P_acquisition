@@ -79,6 +79,7 @@ metadata.ITI = 0.5; %seconds of laser shuttered between trials.
 metadata.endPadDur = 5;
 metadata.startPadDur = 3;
 metadata.fs = 4e4;
+metadata.shuffleWithin = 0;
 metadata.maxVoltage = 1.2; %use max 0.5 if powering a speaker!!
 metadata.random = 1;
 plotting = 0;
